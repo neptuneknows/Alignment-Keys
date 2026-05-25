@@ -87,13 +87,11 @@ public class AlignmentKeys implements ModInitializer {
 		if (client.player == null) return;
 
 		float pitch = client.player.getXRot();
-		pitch = (pitch % 360 + 360) % 360;
 
 		float snap = Math.round(pitch / snapAnglePitch1) * snapAnglePitch1;
 		snap += snapAnglePitch1 * direction;
 
-		if (snap >= 360) snap -= 360;
-		if (snap < 0) snap += 360;
+		snap = Math.clamp(snap, -90, 90);
 
 		client.player.setXRot(snap);
 	}
