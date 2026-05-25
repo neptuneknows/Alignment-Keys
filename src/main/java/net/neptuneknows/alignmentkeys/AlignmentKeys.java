@@ -16,6 +16,7 @@ public class AlignmentKeys implements ModInitializer {
 			Identifier.fromNamespaceAndPath(AlignmentKeys.MOD_ID, "custom_category")
 	);
 	float snapAngleYaw45 = 45.0f;
+	float snapAngleYaw180 = 180.0f;
 	float snapAnglePitch1 = 1.0f;
 
 	KeyMapping clockwiseRotation = KeyMappingHelper.registerKeyMapping(
@@ -46,6 +47,13 @@ public class AlignmentKeys implements ModInitializer {
 				GLFW.GLFW_KEY_DOWN,
 				this.CATEGORY
 			));
+	KeyMapping rotateYaw180 = KeyMappingHelper.registerKeyMapping(
+			new KeyMapping(
+					"Rotate 180°",
+					InputConstants.Type.KEYSYM,
+					GLFW.GLFW_KEY_R,
+					this.CATEGORY
+			));
 	public void rotateYaw45(Minecraft client, int direction) {
 		if (client.player == null) return;
 
@@ -59,6 +67,21 @@ public class AlignmentKeys implements ModInitializer {
 		if (snap < 0) snap += 360;
 
 		client.player.setYRot(snap);
+	}
+	public void rotateYaw180(Minecraft client, int direction) {
+		if (client.player == null) return;
+
+		float yaw = client.player.getYRot();
+		yaw = (yaw % 360 + 360) % 360;
+
+		float snap = (yaw /  snapAngleYaw180) * snapAngleYaw180;
+		snap += snapAngleYaw180 * direction;
+
+		if (snap >= 360) snap -= 360;
+		if (snap < 0) snap += 360;
+
+		client.player.setYRot(snap);
+
 	}
 	public void rotatePitch1(Minecraft client, int direction) {
 		if (client.player == null) return;
@@ -89,6 +112,9 @@ public class AlignmentKeys implements ModInitializer {
 			}
 			while(rotatePitchDown.consumeClick()) {
 				rotatePitch1(client, 1);
+			}
+			while(rotateYaw180.consumeClick()) {
+				rotateYaw180(client, 1);
 			}
 		});
 
