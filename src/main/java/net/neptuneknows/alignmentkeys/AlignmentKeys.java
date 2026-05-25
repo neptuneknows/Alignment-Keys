@@ -21,7 +21,7 @@ public class AlignmentKeys implements ModInitializer {
 
 	KeyMapping clockwiseRotation = KeyMappingHelper.registerKeyMapping(
 			new KeyMapping(
-					"Rotate 45° Clockwise",
+					"Rotate Yaw 45° Clockwise",
 					InputConstants.Type.KEYSYM,
 					GLFW.GLFW_KEY_PERIOD,
 					this.CATEGORY
@@ -49,7 +49,7 @@ public class AlignmentKeys implements ModInitializer {
 			));
 	KeyMapping rotateYaw180 = KeyMappingHelper.registerKeyMapping(
 			new KeyMapping(
-					"Rotate 180°",
+					"Rotate Yaw 180°",
 					InputConstants.Type.KEYSYM,
 					GLFW.GLFW_KEY_R,
 					this.CATEGORY
