@@ -8,8 +8,8 @@
 		"neptuneknows"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "",
+		"sources": ""
 	},
 	"license": "MIT-Licence",
 	"icon": "assets/alignmentkeys/icon.png",
