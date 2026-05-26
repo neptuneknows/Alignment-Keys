@@ -10,39 +10,42 @@ import org.lwjgl.glfw.GLFW;
 import net.minecraft.client.Minecraft;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
+import net.neptuneknows.alignmentkeys.config.MidnightlibConfig;
+
+import static net.neptuneknows.alignmentkeys.config.MidnightlibConfig.customisableYawSnap;
+import static net.neptuneknows.alignmentkeys.config.MidnightlibConfig.customisablePitchSnap;
+
 public class AlignmentKeys implements ModInitializer {
 	public static final String MOD_ID = "alignmentkeys";
 	KeyMapping.Category CATEGORY = KeyMapping.Category.register(
 			Identifier.fromNamespaceAndPath(AlignmentKeys.MOD_ID, "custom_category")
 	);
-	float snapAngleYaw45 = 45.0f;
 	float snapAngleYaw180 = 180.0f;
-	float snapAnglePitch1 = 1.0f;
 
 	KeyMapping clockwiseRotation = KeyMappingHelper.registerKeyMapping(
 			new KeyMapping(
-					"Rotate Yaw 45° Clockwise",
+					"Rotate Yaw Clockwise",
 					InputConstants.Type.KEYSYM,
 					GLFW.GLFW_KEY_PERIOD,
 					this.CATEGORY
 			));
 	KeyMapping counterClockwiseRotation = KeyMappingHelper.registerKeyMapping(
 			new KeyMapping(
-					"Rotate Yaw 45° Counterclockwise",
+					"Rotate Yaw Counterclockwise",
 					InputConstants.Type.KEYSYM,
 					GLFW.GLFW_KEY_COMMA,
 					this.CATEGORY
 			));
 	KeyMapping rotatePitchUp = KeyMappingHelper.registerKeyMapping(
 			new KeyMapping(
-					"Rotate Pitch 1° Up",
+					"Rotate Pitch Up",
 					InputConstants.Type.KEYSYM,
 					GLFW.GLFW_KEY_UP,
 					this.CATEGORY
 			));
 	KeyMapping rotatePitchDown = KeyMappingHelper.registerKeyMapping(
 			new KeyMapping(
-				"Rotate Pitch 1° Down",
+					"Rotate Pitch Down",
 				InputConstants.Type.KEYSYM,
 				GLFW.GLFW_KEY_DOWN,
 				this.CATEGORY
@@ -60,8 +63,8 @@ public class AlignmentKeys implements ModInitializer {
 		float yaw = client.player.getYRot();
 		yaw = (yaw % 360 + 360) % 360;
 
-		float snap = Math.round(yaw / snapAngleYaw45) * snapAngleYaw45;
-		snap += snapAngleYaw45 * direction;
+		float snap = Math.round(yaw / customisableYawSnap) * customisableYawSnap;
+		snap += customisableYawSnap * direction;
 
 		if (snap >= 360) snap -= 360;
 		if (snap < 0) snap += 360;
@@ -88,8 +91,8 @@ public class AlignmentKeys implements ModInitializer {
 
 		float pitch = client.player.getXRot();
 
-		float snap = Math.round(pitch / snapAnglePitch1) * snapAnglePitch1;
-		snap += snapAnglePitch1 * direction;
+		float snap = Math.round(pitch / customisablePitchSnap) * customisablePitchSnap;
+		snap += customisablePitchSnap * direction;
 
 		snap = Math.clamp(snap, -90, 90);
 
@@ -115,6 +118,8 @@ public class AlignmentKeys implements ModInitializer {
 				rotateYaw180(client, 1);
 			}
 		});
+
+		MidnightlibConfig.init("Alignment Keys", MidnightlibConfig.class);
 
 	}
 }
