@@ -20,7 +20,6 @@ public class AlignmentKeys implements ModInitializer {
 	KeyMapping.Category CATEGORY = KeyMapping.Category.register(
 			Identifier.fromNamespaceAndPath(AlignmentKeys.MOD_ID, "custom_category")
 	);
-	float snapAngleYaw180 = 180.0f;
 
 	KeyMapping clockwiseRotation = KeyMappingHelper.registerKeyMapping(
 			new KeyMapping(
@@ -57,7 +56,7 @@ public class AlignmentKeys implements ModInitializer {
 					GLFW.GLFW_KEY_R,
 					this.CATEGORY
 			));
-	public void rotateYaw45(Minecraft client, int direction) {
+	public void rotateYaw(Minecraft client, int direction) {
 		if (client.player == null) return;
 
 		float yaw = client.player.getYRot();
@@ -65,9 +64,6 @@ public class AlignmentKeys implements ModInitializer {
 
 		float snap = Math.round(yaw / customisableYawSnap) * customisableYawSnap;
 		snap += customisableYawSnap * direction;
-
-		if (snap >= 360) snap -= 360;
-		if (snap < 0) snap += 360;
 
 		client.player.setYRot(snap);
 	}
@@ -77,16 +73,13 @@ public class AlignmentKeys implements ModInitializer {
 		float yaw = client.player.getYRot();
 		yaw = (yaw % 360 + 360) % 360;
 
-		float snap = (yaw /  snapAngleYaw180) * snapAngleYaw180;
-		snap += snapAngleYaw180 * direction;
-
-		if (snap >= 360) snap -= 360;
-		if (snap < 0) snap += 360;
+		float snap = (yaw /  180) * 180;
+		snap += 180 * direction;
 
 		client.player.setYRot(snap);
 
 	}
-	public void rotatePitch1(Minecraft client, int direction) {
+	public void rotatePitch(Minecraft client, int direction) {
 		if (client.player == null) return;
 
 		float pitch = client.player.getXRot();
@@ -103,16 +96,16 @@ public class AlignmentKeys implements ModInitializer {
 	public void onInitialize() {
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			while(clockwiseRotation.consumeClick()) {
-				rotateYaw45(client, 1);
+				rotateYaw(client, 1);
 			}
 			while(counterClockwiseRotation.consumeClick()) {
-				rotateYaw45(client, -1);
+				rotateYaw(client, -1);
 			}
 			while(rotatePitchUp.consumeClick()) {
-				rotatePitch1(client, -1);
+				rotatePitch(client, -1);
 			}
 			while(rotatePitchDown.consumeClick()) {
-				rotatePitch1(client, 1);
+				rotatePitch(client, 1);
 			}
 			while(rotateYaw180.consumeClick()) {
 				rotateYaw180(client, 1);
